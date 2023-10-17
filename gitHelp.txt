@@ -1,0 +1,6 @@
+git log #view all commits
+git pull 
+git add <ficheiro>
+git add . #Every file added
+git commit -m "descrição"
+git push
