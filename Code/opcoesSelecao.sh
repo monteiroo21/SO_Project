@@ -51,17 +51,18 @@ fi
 # Armazena o diretório de destino
 main_directory="$1"
 
-
-
-
-# Seleção dos ficheiros a contabilizar depende da opção
-if [ ! -z "$nome" ] && [ ! -z "$dataMax" ] && [ ! -z "$tamanhoMin" ]; then
-    echo 'ola'
-    find "$main_directory" -type d | while read -r directory; do
-    if  [ -n "$(find "$directory" -type f -regex "$nome" -newermt "$dataMax" -size +794000c)" ]; then
-            size=$(du -b "$directory")
-            echo $directory
-	    echo "$size"
+# Função para calcular o tamanho total de um diretório e exibi-lo
+calculate_directory_size() {
+    local dir="$1"
+    local total_size=0
+    for file in "$dir"/*; do
+        if [[ -f "$file" && "$file" =~ $nome && $(date -r "$file" +%s) -ge $(date -d "$dataMax" +%s) && $(stat -c %s "$file") -ge "$tamanhoMin" ]]; then
+            total_size=$((total_size + $(stat -c %s "$file")))
         fi
     done
-fi
+    echo "$total_size $dir"
+}
+
+find "$main_directory" -maxdepth 1 -type d | while read -r directory; do
+    calculate_directory_size "$directory"
+done
