@@ -1,0 +1,22 @@
+Alterações que tive de fazer para o código funcionar:
+
+Para ele continuar a procurar dentro de cada Folder mais Folders.
+1) # Verificar se o "dir" tem subdiretórios. Se tiver chamar recursivamente esta funçao calculate_directory_size "$sub_directory".
+    # Depois deve fazer o mesmo para este "sub_directory". Verificar se tem subdiretórios e assim consecutivamente até não existirem mais subdiretórios.
+
+
+Estava a ter um problema. No output apareciam as mesmas linhas 2 vezes.
+2) for sub_directory in "$dir"/* verifica todos os subdiretórios, incluindo aqueles que já foram processados anteriormente. Para evitar duplicações, você pode adicionar uma verificação para ignorar os diretórios que já foram processados. Uma maneira de fazer isso é manter um registro dos diretórios processados em um array.
+
+3) Alterei '-ge' para '-le' no find do dataMax. Se o ficheiro tiver sido modificado
+depois da data indicada ele não é considerado.
+Portanto, a data do ficheiro tem que ser inferior (-le) à indicada.
+
+4) Adicionei mais folders para poder testar e analisar melhor.
+
+
+Coisas a melhorar:
+- Validações
+- Acho que não é suposto passar o Full path como eu passei. O Prof. no enunciado mete só "sop". O meu irmão também disse que não era suposto passar todo. Mas isso é um problema para o futuro.
+- Adicionar as opções de visualização. Para isso se calhar é melhor meter o display todo que está a aparecer agora no ecrã num ficheiro 'dados.txt' e depois imprimir do ficheiro para o ecrã de acordo com a opção de visualização.
+

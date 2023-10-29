@@ -3,6 +3,7 @@
 nome=""
 dataMax=""
 tamanhoMin=""
+processed_directories=()
 
 # Processa as opções da linha de comando
 while getopts ":n:d:s:" opt; do
@@ -55,14 +56,31 @@ main_directory="$1"
 calculate_directory_size() {
     local dir="$1"
     local total_size=0
+
+    # Verifica se o diretório já foi processado
+    if [[ " ${processed_directories[@]} " =~ " $dir " ]]; then
+        return
+    fi
+
+    # Registra o diretório como processado
+    processed_directories+=("$dir")
+
     for file in "$dir"/*; do
-        if [[ -f "$file" && "$file" =~ $nome && $(date -r "$file" +%s) -ge $(date -d "$dataMax" +%s) && $(stat -c %s "$file") -ge "$tamanhoMin" ]]; then
+        if [[ -f "$file" && "$file" =~ $nome && $(date -r "$file" +%s) -le $(date -d "$dataMax" +%s) && $(stat -c %s "$file") -ge "$tamanhoMin" ]]; then
             total_size=$((total_size + $(stat -c %s "$file")))
         fi
     done
+
     echo "$total_size $dir"
+
+    # Verifica se o diretório tem subdiretórios. Se tiver chamar recursivamente esta funçao 
+    for sub_directory in "$dir"/*; do
+        if [[ -d "$sub_directory" ]]; then
+            calculate_directory_size "$sub_directory"
+        fi
+    done
 }
 
-find "$main_directory" -maxdepth 1 -type d | while read -r directory; do
-    calculate_directory_size "$directory"
-done
+calculate_directory_size "$main_directory"
+
+
