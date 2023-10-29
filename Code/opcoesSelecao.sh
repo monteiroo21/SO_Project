@@ -5,13 +5,39 @@ nome=""
 dataMax=""
 tamanhoMin=""
 
-# Manter os registos dos diretórios processados num array
-processed_directories=()
-
 # Opções de Visualização
 r=0
 a=0
 l=""
+
+# Manter os registos dos diretórios processados num array
+processed_directories=()
+
+# Verifica se a data é válida
+dateIsValid(){
+    local date = "$1";
+    if date -d "$input_date" "+%Y %b %d %H:%M" > /dev/null 2>&1; then
+        return 1;
+    else
+        return 0;
+    fi
+}
+
+# Verifica se o tamanho é superior a zero
+sizeIsValid(){
+    local tamanhoMin = "$1";
+    zero = 0;
+    if [ "$tamanhoMin" -le 0 ]; then
+        return 1;
+    else 
+        return 0;
+    fi
+}
+
+# Dá print ao cabeçalho (função incompleta já vou trabalhar nisso)
+printHeader(){
+    printf "%4s %4s" "SIZE" "NAME"
+}
 
 # Processa as opções da linha de comando
 while getopts ":n:d:s:ral:" opt; do
@@ -87,11 +113,11 @@ calculate_directory_size() {
 
     for file in "$dir"/*; do
         if [[ -f "$file" && "$file" =~ $nome && $(date -r "$file" +%s) -le $(date -d "$dataMax" +%s) && $(stat -c %s "$file") -ge "$tamanhoMin" ]]; then
-            total_size=$((total_size + $(stat -c %s "$file")))
+            total_size=$((total_size + $(stat -c %s "$file"))
         fi
     done
 
-    echo "$total_size $dir" # >> dados.txt
+    echo "$total_size $dir" >> dados.txt
 
     # Verifica se o diretório tem subdiretórios. Se tiver chamar recursivamente esta funçao 
     for sub_directory in "$dir"/*; do
@@ -102,9 +128,30 @@ calculate_directory_size() {
 }
 
 # Função para visualizar a ocupação do espaço como pretendido
-
+display(){
+    if [ "$a" -eq 0 ] && [ "$r" -eq 0 ] && [ "$l" -eq 0 ]; then
+        while read line; do
+            echo $line
+        done < dados.txt
+    elif [ "$a" -eq 1 ] && [ "$r" -eq 1 ]; then
+        echo "You can only choose one option between -a and -r. Try again"
+    fi
+    if [ "$a" -eq 1]; then
+        sort -k2 dados.txt > dadosbyname.txt
+        while read line; do
+            echo $line
+        done < dadosbyname.txt
+    elif [ "$r" -eq 1]; then
+        sort -r dados.txt > reversedados.txt
+        while read line; do
+            echo $line
+        done < reversedados.txt
+    elif [ "$l" -gt 0]; then
+        head -n "$l" dados.txt
+    fi
+}
 
 
 calculate_directory_size "$main_directory"
-# funcao_display
+# display()
 
