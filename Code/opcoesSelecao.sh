@@ -36,7 +36,8 @@ sizeIsValid(){
 
 # Dá print ao cabeçalho (função incompleta já vou trabalhar nisso)
 printHeader(){
-    printf "%4s %4s" "SIZE" "NAME"
+    current_date=($date +”%Y%m%d”)
+    printf "%4s %4s %8s %40s\n" "SIZE" "$current_date" "NAME" "$@"
 }
 
 # Processa as opções da linha de comando
@@ -136,22 +137,29 @@ display(){
     elif [ "$a" -eq 1 ] && [ "$r" -eq 1 ]; then
         echo "You can only choose one option between -a and -r. Try again"
     fi
-    if [ "$a" -eq 1]; then
+    if [ "$a" -eq 1 ]; then
         sort -k2 dados.txt > dadosbyname.txt
         while read line; do
             echo $line
         done < dadosbyname.txt
-    elif [ "$r" -eq 1]; then
+    elif [ "$r" -eq 1 ]; then
         sort -r dados.txt > reversedados.txt
         while read line; do
             echo $line
         done < reversedados.txt
-    elif [ "$l" -gt 0]; then
-        head -n "$l" dados.txt
+    elif [ "$l" -gt 0 ]; then
+        if [ "$a" -eq 1 ]; then
+            sort -k2 dados.txt > dadosbyname.txt
+            head -n "$l" dadosbyname.txt
+        elif [ "$r" -eq 1 ]; then
+            sort -r dados.txt > reversedados.txt
+            head -n "$l" reversedados.txt
+        else 
+            head -n "$l" dados.txt
+        fi
     fi
 }
 
 
 calculate_directory_size "$main_directory"
-# display()
-
+# display
