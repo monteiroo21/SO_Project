@@ -14,9 +14,21 @@ Portanto, a data do ficheiro tem que ser inferior (-le) à indicada.
 
 4) Adicionei mais folders para poder testar e analisar melhor.
 
+5) Código está a funcionar corretamente nas seguintes situações:
+- São dadas as 3 opções de seleção
+- São dadas 2 opções de seleção
+- É dada apenas 1 opção de seleção
+- Não é dada opção de seleção. Ele considera quaisquer tipos de ficheiros: .sh, .c, .pdf , etc ..
+- A ordem não é importante, funciona se for s,n,d ou d,s,n, ...
+
+6) Adicionei as opções de visualização
+-Falta fazer a funcaoDisplay
+- Mas o código está a reconhecer as opções corretamente
+- Apenas -l é suposto ler o argumento à sua frente
 
 Coisas a melhorar:
 - Validações
 - Acho que não é suposto passar o Full path como eu passei. O Prof. no enunciado mete só "sop". O meu irmão também disse que não era suposto passar todo. Mas isso é um problema para o futuro.
 - Adicionar as opções de visualização. Para isso se calhar é melhor meter o display todo que está a aparecer agora no ecrã num ficheiro 'dados.txt' e depois imprimir do ficheiro para o ecrã de acordo com a opção de visualização.
+
 

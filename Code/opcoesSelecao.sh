@@ -1,12 +1,20 @@
 #!/bin/bash
 
+# Opções de Seleção
 nome=""
 dataMax=""
 tamanhoMin=""
+
+# Manter os registos dos diretórios processados num array
 processed_directories=()
 
+# Opções de Visualização
+r=0
+a=0
+l=""
+
 # Processa as opções da linha de comando
-while getopts ":n:d:s:" opt; do
+while getopts ":n:d:s:ral:" opt; do
     case $opt in
         n)
             nome="$OPTARG"
@@ -16,6 +24,15 @@ while getopts ":n:d:s:" opt; do
             ;;
         s)
             tamanhoMin="$OPTARG"
+            ;;
+        r)
+            r=1
+            ;;
+        a)
+            a=1
+            ;;
+        l)
+            l="$OPTARG"
             ;;
         \?)
             echo "Opção inválida: -$OPTARG" >&2
@@ -38,6 +55,9 @@ echo "nome: $nome"
 echo "dataMax: $dataMax"
 echo "tamanhoMin: $tamanhoMin"
 
+echo "var r: $r"
+echo "var a: $a"
+echo "var l: $l"
 # Processamento dos diretórios em baixo
 
 # Cria ou substitui o arquivo "dados.txt"
@@ -71,7 +91,7 @@ calculate_directory_size() {
         fi
     done
 
-    echo "$total_size $dir"
+    echo "$total_size $dir" # >> dados.txt
 
     # Verifica se o diretório tem subdiretórios. Se tiver chamar recursivamente esta funçao 
     for sub_directory in "$dir"/*; do
@@ -81,6 +101,10 @@ calculate_directory_size() {
     done
 }
 
-calculate_directory_size "$main_directory"
+# Função para visualizar a ocupação do espaço como pretendido
 
+
+
+calculate_directory_size "$main_directory"
+# funcao_display
 
