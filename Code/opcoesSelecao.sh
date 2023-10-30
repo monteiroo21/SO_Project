@@ -114,11 +114,11 @@ calculate_directory_size() {
 
     for file in "$dir"/*; do
         if [[ -f "$file" && "$file" =~ $nome && $(date -r "$file" +%s) -le $(date -d "$dataMax" +%s) && $(stat -c %s "$file") -ge "$tamanhoMin" ]]; then
-            total_size=$((total_size + $(stat -c %s "$file"))
+		total_size=$((total_size + $(stat -c %s "$file")))
         fi
     done
 
-    echo "$total_size $dir" >> dados.txt
+    echo "$total_size $dir" # >> dados.txt
 
     # Verifica se o diretório tem subdiretórios. Se tiver chamar recursivamente esta funçao 
     for sub_directory in "$dir"/*; do
