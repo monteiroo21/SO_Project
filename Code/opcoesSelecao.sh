@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Cabeçalho
+header="$*"
+
 # Opções de Seleção
 nome=""
 dataMax=""
@@ -8,7 +11,7 @@ tamanhoMin=""
 # Opções de Visualização
 r=0
 a=0
-l=""
+l=0
 
 # Manter os registos dos diretórios processados num array
 processed_directories=()
@@ -16,7 +19,7 @@ processed_directories=()
 # Verifica se a data é válida
 dateIsValid(){
     local date = "$1";
-    if date -d "$input_date" "+%Y %b %d %H:%M" > /dev/null 2>&1; then
+    if date -d "$input_date" "+%d %b %H:%M" > /dev/null 2>&1; then
         return 1;
     else
         return 0;
@@ -26,8 +29,7 @@ dateIsValid(){
 # Verifica se o tamanho é superior a zero
 sizeIsValid(){
     local tamanhoMin = "$1";
-    zero = 0;
-    if [ "$tamanhoMin" -le 0 ]; then
+    if [ "$tamanhoMin" -gt 0 ]; then
         return 1;
     else 
         return 0;
@@ -36,8 +38,8 @@ sizeIsValid(){
 
 # Dá print ao cabeçalho (função incompleta já vou trabalhar nisso)
 printHeader(){
-    current_date=($date +”%Y%m%d”)
-    printf "%4s %4s %8s %40s\n" "SIZE" "$current_date" "NAME" "$@"
+    current_date=$(date +'%Y%m%d')
+    printf "%4s %4s %8s %s\n" "SIZE" "NAME" "$current_date" "$*"
 }
 
 # Processa as opções da linha de comando
@@ -117,8 +119,10 @@ calculate_directory_size() {
 		total_size=$((total_size + $(stat -c %s "$file")))
         fi
     done
-
-    echo "$total_size $dir" # >> dados.txt
+    
+    if [ "$total_size" -gt 0 ]; then
+        echo "$total_size $dir" >> dados.txt
+    fi
 
     # Verifica se o diretório tem subdiretórios. Se tiver chamar recursivamente esta funçao 
     for sub_directory in "$dir"/*; do
@@ -134,32 +138,34 @@ display(){
         while read line; do
             echo $line
         done < dados.txt
-    elif [ "$a" -eq 1 ] && [ "$r" -eq 1 ]; then
-        echo "You can only choose one option between -a and -r. Try again"
-    fi
-    if [ "$a" -eq 1 ]; then
-        sort -k2 dados.txt > dadosbyname.txt
-        while read line; do
-            echo $line
-        done < dadosbyname.txt
-    elif [ "$r" -eq 1 ]; then
-        sort -r dados.txt > reversedados.txt
-        while read line; do
-            echo $line
-        done < reversedados.txt
-    elif [ "$l" -gt 0 ]; then
-        if [ "$a" -eq 1 ]; then
+    elif [ "$a" -eq 1 ]; then
+        if [ "$r" -eq 1 ]; then
+            echo "You can only choose one option between -a and -r. Try again"
+        elif [ "$l" -gt 0 ]; then
             sort -k2 dados.txt > dadosbyname.txt
             head -n "$l" dadosbyname.txt
-        elif [ "$r" -eq 1 ]; then
+        else
+            sort -k2 dados.txt > dadosbyname.txt
+            while read line; do
+                echo $line
+            done < dadosbyname.txt
+        fi
+    elif [ "$r" -eq 1 ]; then
+        if [ "$l" -gt 0 ]; then
             sort -r dados.txt > reversedados.txt
             head -n "$l" reversedados.txt
-        else 
-            head -n "$l" dados.txt
+        else
+            sort -r dados.txt > reversedados.txt
+            while read line; do
+                echo $line
+            done < reversedados.txt
         fi
+    elif [ "$l" -gt 0 ]; then
+        head -n "$l" dados.txt
     fi
 }
 
 
 calculate_directory_size "$main_directory"
-# display
+printHeader "$header"
+display
