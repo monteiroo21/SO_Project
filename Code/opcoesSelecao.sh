@@ -153,7 +153,7 @@ display(){
         fi
     elif [ "$r" -eq 1 ]; then
         if [ "$l" -gt 0 ]; then
-            sort -r dados.txt > reversedados.txt
+            sort dados.txt > reversedados.txt
             head -n "$l" reversedados.txt
         else
             sort dados.txt > reversedados.txt
