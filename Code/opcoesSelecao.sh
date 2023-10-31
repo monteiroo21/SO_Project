@@ -18,7 +18,7 @@ processed_directories=()
 
 # Verifica se a data é válida
 dateIsValid(){
-    local date = "$1";
+    local input_date = "$1";
     if date -d "$input_date" "+%d %b %H:%M" > /dev/null 2>&1; then
         return 1;
     else
@@ -135,9 +135,10 @@ calculate_directory_size() {
 # Função para visualizar a ocupação do espaço como pretendido
 display(){
     if [ "$a" -eq 0 ] && [ "$r" -eq 0 ] && [ "$l" -eq 0 ]; then
+        sort -r dados.txt > dadosbydefault.txt
         while read line; do
             echo $line
-        done < dados.txt
+        done < dadosbydefault.txt
     elif [ "$a" -eq 1 ]; then
         if [ "$r" -eq 1 ]; then
             echo "You can only choose one option between -a and -r. Try again"
@@ -155,7 +156,7 @@ display(){
             sort -r dados.txt > reversedados.txt
             head -n "$l" reversedados.txt
         else
-            sort -r dados.txt > reversedados.txt
+            sort dados.txt > reversedados.txt
             while read line; do
                 echo $line
             done < reversedados.txt

@@ -1,4 +1,4 @@
-250480 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas
+309 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas
 232 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula1
 464 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula1/Teste1
 492 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula1/Teste1/Teste2
