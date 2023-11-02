@@ -84,13 +84,6 @@ shift $((OPTIND-1))
 # echo "dataMax: $dataMax"
 # echo "tamanhoMin: $tamanhoMin"
 
-
-echo "var r: $r"
-echo "var a: $a"
-echo "var l: $l"
-
-echo ""
-
 # echo "var r: $r"
 # echo "var a: $a"
 # echo "var l: $l"
@@ -148,7 +141,7 @@ calculate_directory_size() {
 # Função para visualizar a ocupação do espaço como pretendido
 display(){
     if [ "$a" -eq 0 ] && [ "$r" -eq 0 ] && [ "$l" -eq 0 ]; then
-        sort -n -k1 dados.txt > dadosbydefault.txt
+        sort -n -r dados.txt > dadosbydefault.txt
         while read line; do
             echo $line
         done < dadosbydefault.txt
@@ -166,7 +159,7 @@ display(){
         fi
     elif [ "$r" -eq 1 ]; then
         if [ "$l" -gt 0 ]; then
-            sort -n -r dados.txt > reversedados.txt
+            sort -n dados.txt > reversedados.txt
             head -n "$l" reversedados.txt
         else
             sort -n -r dados.txt > reversedados.txt

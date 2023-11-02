@@ -51,10 +51,20 @@ fileB="$2"
 
 # Função que calcula a evolução do espaço ocupado
 calculate_size_evolution(){
-    while IFS= read -r line; do
-        if ! grep -q 'SIZE NAME' $fileB; then
-            while IFS= read -r line; do
-                if ! grep -q 'SIZE NAME' $fileA; then
+    while IFS= read -r lineB; do
+        if grep -q 'SIZE NAME' $fileB; then
+            continue
+        else
+            folder=$(echo "$lineB" | awk '{print $2}')
+            sizeB=$(echo "$lineB" | awk '{print $1}')
+            while IFS= read -r lineA; do
+                if grep -q 'SIZE NAME' $fileA; then
+                    continue
+                else    
+                    if grep -q "$folder" $lineA; then
+                        sizeA=$(echo "$lineBA" | awk '{print $1}')
+                        sizeEvolution=$((sizeA - sizeB))
+                    fi
                 fi
             done < $fileA
         fi;
@@ -64,7 +74,7 @@ calculate_size_evolution(){
 # Função para visualizar a ocupação do espaço como pretendido
 display(){
     if [ "$a" -eq 0 ] && [ "$r" -eq 0 ] && [ "$l" -eq 0 ]; then
-        sort -r spacerate.txt > spaceratedefault.txt
+        sort -n -r spacerate.txt > spaceratedefault.txt
         while read line; do
             echo $line
         done < spaceratedefault.txt
@@ -82,10 +92,10 @@ display(){
         fi
     elif [ "$r" -eq 1 ]; then
         if [ "$l" -gt 0 ]; then
-            sort spacerate.txt > reversespacerate.txt
+            sort -n spacerate.txt > reversespacerate.txt
             head -n "$l" reversespacerate.txt
         else
-            sort spacerate.txt > reversespacerate.txt
+            sort -n -r spacerate.txt > reversespacerate.txt
             while read line; do
                 echo $line
             done < reversespacerate.txt
