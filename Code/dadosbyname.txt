@@ -1,6 +1,1 @@
-780 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste2
-0 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste2/abc
-260 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste2/aula1
-260 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste2/aula1/exemplo
-260 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste2/aula2
-260 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste2/aula2/exemplo2
+NA /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste4
