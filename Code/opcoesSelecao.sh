@@ -13,8 +13,6 @@ r=0
 a=0
 l=0
 
-# Manter os registos dos diretórios processados num array
-processed_directories=()
 
 # Verifica se a data é válida
 dateIsValid(){
@@ -40,6 +38,11 @@ sizeIsValid(){
 printHeader(){
     current_date=$(date +'%Y%m%d')
     printf "%4s %4s %8s %s\n" "SIZE" "NAME" "$current_date" "$*"
+}
+
+directory_notFound(){
+  echo "ERROR: $1 directory not found!"
+  exit 1;
 }
 
 # Processa as opções da linha de comando
@@ -107,10 +110,8 @@ calculate_directory_size() {
     local dir="$1"
     local total_size="NA"  # Inicializa com "NA"
 
-    # Verifica se o diretório já foi processado
-    if [[ " ${processed_directories[@]} " =~ " $dir " ]]; then
-        return
-    fi
+    # Diretoria nao existe
+    [[ -d "$dir" ]] || directory_notFound "$dir"
 
     # Verifica se o script tem permissão de leitura para o diretório.
     if [ ! -r "$dir" ]; then
@@ -120,8 +121,6 @@ calculate_directory_size() {
 
     local total_size=0 # tem permissão, portanto começa com SIZE 0
 
-    # Regista o diretório como processado
-    processed_directories+=("$dir")
 
     folders=$(find "$dir" -type d)
 
