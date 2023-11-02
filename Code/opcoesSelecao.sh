@@ -148,7 +148,7 @@ calculate_directory_size() {
 # Função para visualizar a ocupação do espaço como pretendido
 display(){
     if [ "$a" -eq 0 ] && [ "$r" -eq 0 ] && [ "$l" -eq 0 ]; then
-        sort -r dados.txt > dadosbydefault.txt
+        sort -n -k1 dados.txt > dadosbydefault.txt
         while read line; do
             echo $line
         done < dadosbydefault.txt
@@ -166,10 +166,10 @@ display(){
         fi
     elif [ "$r" -eq 1 ]; then
         if [ "$l" -gt 0 ]; then
-            sort dados.txt > reversedados.txt
+            sort -n -r dados.txt > reversedados.txt
             head -n "$l" reversedados.txt
         else
-            sort dados.txt > reversedados.txt
+            sort -n -r dados.txt > reversedados.txt
             while read line; do
                 echo $line
             done < reversedados.txt
