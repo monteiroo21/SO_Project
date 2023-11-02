@@ -80,15 +80,21 @@ shift $((OPTIND-1))
 # Agora, os argumentos remanescentes em "$@" são os diretórios a serem processados
 
 # Exiba as variáveis para verificar se elas foram atualizadas corretamente
-echo "nome: $nome"
-echo "dataMax: $dataMax"
-echo "tamanhoMin: $tamanhoMin"
+# echo "nome: $nome"
+# echo "dataMax: $dataMax"
+# echo "tamanhoMin: $tamanhoMin"
+
 
 echo "var r: $r"
 echo "var a: $a"
 echo "var l: $l"
 
 echo ""
+
+# echo "var r: $r"
+# echo "var a: $a"
+# echo "var l: $l"
+
 # Processamento dos diretórios em baixo
 
 # Cria ou substitui o arquivo "dados.txt"
@@ -171,7 +177,7 @@ display(){
             done < reversedados.txt
         fi
     elif [ "$l" -gt 0 ]; then
-        head -n "$l" dados.txt
+        head -n "$l" dadosbydefault.txt
     fi
 }
 

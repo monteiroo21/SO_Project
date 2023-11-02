@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 956 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Praticas/aula1/Teste1
 921 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Praticas/aula2/Teste3/Teste4
 49 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Praticas/abc
@@ -7,3 +8,5 @@
 2039 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Praticas/aula2
 1610 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Praticas/aula2/Teste3
 1188 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Praticas/aula1
+=======
+>>>>>>> 94289a1d5059801f1fa6b351bec0432db3d3efaf
