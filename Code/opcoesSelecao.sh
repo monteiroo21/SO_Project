@@ -5,7 +5,7 @@ header="$*"
 
 # Opções de Seleção
 nome=""
-dataMax=""
+dataMax=$(date)
 tamanhoMin=""
 
 # Opções de Visualização
@@ -123,31 +123,19 @@ calculate_directory_size() {
     # Regista o diretório como processado
     processed_directories+=("$dir")
 
-    for file in "$dir"/*; do
-        # Verifica se o script tem permissão de leitura para o arquivo
-        if [ -f "$file" ] && [ ! -r "$file" ]; then # erifica se o elemento é um arquivo (usando -f) e, se for um arquivo, verifica as permissões de leitura. Se o elemento for um diretório vazio, a primeira condição será falsa, e a verificação de permissão de leitura não será aplicada a ele.  Evitamos a marcação de "NA" para diretórios vazios
-            echo "NA $dir" >> dados.txt
-            return
-        fi
+    folders=$(find "$dir" -type d)
 
-        if [[ -f "$file" && "$file" =~ $nome && $(date -r "$file" +%s) -le $(date -d "$dataMax" +%s) && $(stat -c %s "$file") -ge "$tamanhoMin" ]]; then
-		total_size=$((total_size + $(stat -c %s "$file")))
-        fi
+    for df in $folders; do
+      total_size=0
+      for file in "$df"/*; do
+          if [[ -f "$file" ]] && [[ "$file" =~ $nome ]] && [[ $(date -r "$file" +%s) -le $(date -d "$dataMax" +%s) ]] && [[ $(stat -c %s "$file") -ge "$tamanhoMin" ]]; then
+      	    total_size=$((total_size + $(stat -c %s "$file")))
+          fi
+      done
+      echo "$total_size $df" >> dados.txt
     done
 
-    for sub_directory in "$dir"/*; do # percorre todos os elementos (arquivos e subdiretórios) no diretório atual
-            if [[ -d "$sub_directory" ]]; then # verifica se o elemento atual é um diretório, ou seja, uma subpasta do diretório atual.
-                sub_directory_size=$(calculate_directory_size "$sub_directory") # a função calculate_directory_size é chamada recursivamente
-                if [ "$sub_directory_size" != "NA" ]; then # verifica se o tamanho do subdiretório é diferente de "NA", o que significa que a função conseguiu calcular o tamanho do subdiretório com sucesso
-                    if [ "$total_size" == "NA" ]; then
-                        total_size=0 #  ele inicializa o total_size com zero para evitar que a soma resulte em "NA"
-                    fi
-                    total_size=$((total_size + sub_directory_size)) # o tamanho do subdiretório é adicionado ao total_size
-                fi
-            fi
-    done
 
-    echo "$total_size $dir" >> dados.txt
 
     # a verificação if [ "$dir" != "$main_directory" ] garante que o echo "$total_size" só seja executado quando o diretório atual não for o diretório principal. Dessa forma, o echo não aparecerá na saída final quando o diretório atual for o diretório principal.
     if [ "$dir" != "$main_directory" ]; then

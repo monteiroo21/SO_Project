@@ -1,1 +1,7 @@
-NA /etc
+260 Teste2
+232 Teste2/aula1
+260 Teste2/aula1/exemplo
+464 Teste2/aula2
+260 Teste2/aula2/exemplo2
+266 Teste2/aula3
+250220 Teste2/abc

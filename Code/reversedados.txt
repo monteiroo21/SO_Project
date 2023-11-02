@@ -1,1 +1,6 @@
-NA /etc
+0 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste 3/abc
+260 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste 3/aula 1/exemplo
+260 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste 3/aula2/exemplo2
+492 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste 3/aula 1
+724 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste 3/aula2
+1476 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste 3
