@@ -124,15 +124,16 @@ calculate_directory_size() {
 
     folders=$(find "$dir" -type d)
 
-    for df in $folders; do
+    while IFS= read -r df; do
       total_size=0
-      for file in $(find "$df" -type f); do
+      files=$(find "$df" -type f)
+      while IFS= read -r file; do
           if [[ -f "$file" ]] && [[ "$file" =~ $nome ]] && [[ $(date -r "$file" +%s) -le $(date -d "$dataMax" +%s) ]] && [[ $(stat -c %s "$file") -ge "$tamanhoMin" ]]; then
       	    total_size=$((total_size + $(stat -c %s "$file")))
           fi
-      done
+      done <<< "$files"
       echo "$total_size $df" >> dados.txt
-    done
+    done <<< "$folders"
 
 
 
