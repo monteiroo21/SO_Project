@@ -1,2 +1,9 @@
-492 Teste 3/aula 1
-260 Teste 3/aula 1/exemplo
+0 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas
+0 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula2
+0 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula2/Teste3
+0 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula2/Teste3/Teste4
+0 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/abc
+0 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula1
+0 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula1/Teste1
+0 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula1/Teste1/Teste2
+0 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/az

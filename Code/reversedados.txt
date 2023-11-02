@@ -1,0 +1,9 @@
+0 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/abc
+0 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/az
+492 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula1/Teste1/Teste2
+921 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula2/Teste3/Teste4
+956 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula1/Teste1
+1188 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula1
+1610 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula2/Teste3
+2039 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula2
+3487 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas
