@@ -84,9 +84,17 @@ shift $((OPTIND-1))
 # echo "dataMax: $dataMax"
 # echo "tamanhoMin: $tamanhoMin"
 
+
+echo "var r: $r"
+echo "var a: $a"
+echo "var l: $l"
+
+echo ""
+
 # echo "var r: $r"
 # echo "var a: $a"
 # echo "var l: $l"
+
 # Processamento dos diretórios em baixo
 
 # Cria ou substitui o arquivo "dados.txt"
@@ -111,7 +119,7 @@ calculate_directory_size() {
         return
     fi
 
-    # Registra o diretório como processado
+    # Regista o diretório como processado
     processed_directories+=("$dir")
 
     for file in "$dir"/*; do
@@ -119,17 +127,24 @@ calculate_directory_size() {
 		total_size=$((total_size + $(stat -c %s "$file")))
         fi
     done
-    
+
+    for sub_directory in "$dir"/*; do
+            if [[ -d "$sub_directory" ]]; then
+                sub_directory_size=$(calculate_directory_size "$sub_directory")
+                total_size=$((total_size + sub_directory_size))
+            fi
+        done
+
     if [ "$total_size" -gt 0 ]; then
         echo "$total_size $dir" >> dados.txt
     fi
 
-    # Verifica se o diretório tem subdiretórios. Se tiver chamar recursivamente esta funçao 
-    for sub_directory in "$dir"/*; do
-        if [[ -d "$sub_directory" ]]; then
-            calculate_directory_size "$sub_directory"
-        fi
-    done
+    # a verificação if [ "$dir" != "$main_directory" ] garante que o echo "$total_size" só seja executado quando o diretório atual não for o diretório principal. Dessa forma, o echo não aparecerá na saída final quando o diretório atual for o diretório principal.
+    if [ "$dir" != "$main_directory" ]; then
+      echo "$total_size"
+    fi
+
+
 }
 
 # Função para visualizar a ocupação do espaço como pretendido
