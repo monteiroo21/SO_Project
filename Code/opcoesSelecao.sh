@@ -162,7 +162,7 @@ display(){
             sort -n dados.txt > reversedados.txt
             head -n "$l" reversedados.txt
         else
-            sort -n -r dados.txt > reversedados.txt
+            sort -n dados.txt > reversedados.txt
             while read line; do
                 echo $line
             done < reversedados.txt
