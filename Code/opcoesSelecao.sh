@@ -127,7 +127,7 @@ calculate_directory_size() {
 
     for df in $folders; do
       total_size=0
-      for file in "$df"/*; do
+      for file in $(find "$df" -type f); do
           if [[ -f "$file" ]] && [[ "$file" =~ $nome ]] && [[ $(date -r "$file" +%s) -le $(date -d "$dataMax" +%s) ]] && [[ $(stat -c %s "$file") -ge "$tamanhoMin" ]]; then
       	    total_size=$((total_size + $(stat -c %s "$file")))
           fi
