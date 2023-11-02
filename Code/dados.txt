@@ -5,3 +5,9 @@
 1610 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula2/Teste3
 2039 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula2
 3487 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas
+0 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste2/abc
+260 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste2/aula1/exemplo
+492 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste2/aula1
+260 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste2/aula2/exemplo2
+724 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste2/aula2
+1476 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste2

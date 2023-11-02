@@ -135,9 +135,7 @@ calculate_directory_size() {
             fi
         done
 
-    if [ "$total_size" -gt 0 ]; then
-        echo "$total_size $dir" >> dados.txt
-    fi
+    echo "$total_size $dir" >> dados.txt
 
     # a verificação if [ "$dir" != "$main_directory" ] garante que o echo "$total_size" só seja executado quando o diretório atual não for o diretório principal. Dessa forma, o echo não aparecerá na saída final quando o diretório atual for o diretório principal.
     if [ "$dir" != "$main_directory" ]; then
