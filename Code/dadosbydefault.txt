@@ -4,3 +4,4 @@
 492 Teste2/aula1
 260 Teste2/aula2/exemplo2
 260 Teste2/aula1/exemplo
+0 Teste2/aula3
