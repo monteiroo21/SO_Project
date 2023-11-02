@@ -1,7 +1,6 @@
-260 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Praticas
-232 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Praticas/aula1
-464 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Praticas/aula1/Teste1
-492 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Praticas/aula1/Teste1/Teste2
-429 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Praticas/aula2
-689 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Praticas/aula2/Teste3
-921 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Praticas/aula2/Teste3/Teste4
+1476 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste2
+0 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste2/abc
+492 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste2/aula1
+260 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste2/aula1/exemplo
+724 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste2/aula2
+260 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste2/aula2/exemplo2
