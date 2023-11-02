@@ -1,6 +1,6 @@
-780 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste2
+1476 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste2
+724 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste2/aula2
+492 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste2/aula1
 260 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste2/aula2/exemplo2
-260 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste2/aula2
 260 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste2/aula1/exemplo
-260 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste2/aula1
 0 /home/joao/Documents/Universidade/2ano/1S/SO/SO_Project/Code/Teste2/abc
