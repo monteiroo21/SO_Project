@@ -16,21 +16,21 @@ l=0
 
 # Verifica se a data é válida
 dateIsValid(){
-    local input_date = "$1";
+    local input_date="$1";
     if date -d "$input_date" "+%d %b %H:%M" > /dev/null 2>&1; then
-        return 1;
-    else
         return 0;
+    else
+        return 1;
     fi
 }
 
 # Verifica se o tamanho é superior a zero
 sizeIsValid(){
-    local tamanhoMin = "$1";
+    local tamanhoMin="$1";
     if [ "$tamanhoMin" -gt 0 ]; then
-        return 1;
-    else 
         return 0;
+    else 
+        return 1;
     fi
 }
 
@@ -45,6 +45,9 @@ directory_notFound(){
   exit 1;
 }
 
+sort -n -r dados.txt > dadosbydefault.txt
+printHeader "$header"
+
 # Processa as opções da linha de comando
 while getopts ":n:d:s:ral:" opt; do
     case $opt in
@@ -53,19 +56,53 @@ while getopts ":n:d:s:ral:" opt; do
             ;;
         d)
             dataMax="$OPTARG"
+            if [[ $(dateIsValid $dataMax) -eq 1 ]]; then
+                echo "Insert a valid date"
+                exit 1;
+            fi
             ;;
         s)
             tamanhoMin="$OPTARG"
+            if [[ $(sizeIsValid $tamanhoMin) -eq 1 ]]; then
+                echo "Insert a valid size"
+                exit 1;
+            fi
             ;;
         r)
             r=1
+            if [ "$l" -gt 0 ]; then
+                sort -n dados.txt > reversedados.txt
+                head -n "$l" reversedados.txt
+            else
+                sort -n dados.txt > reversedados.txt
+                while read line; do
+                    echo $line
+                done < reversedados.txt
+            fi
             ;;
         a)
             a=1
+            if [ "$r" -eq 1 ]; then
+                echo "You can only choose one option between -a and -r. Try again"
+            elif [ "$l" -gt 0 ]; then
+                sort -k2 dados.txt > dadosbyname.txt
+                head -n "$l" dadosbyname.txt
+            else
+                sort -k2 dados.txt > dadosbyname.txt
+                while read line; do
+                    echo $line
+                done < dadosbyname.txt
+            fi
             ;;
         l)
             l="$OPTARG"
+            if [[ $(sizeIsValid $l) -eq 1 ]]; then
+                echo "Insert a valid number of lines"
+                exit 1;
+            fi
+            head -n "$l" dadosbydefault.txt
             ;;
+
         \?)
             echo "Opção inválida: -$OPTARG" >&2
             exit 1
@@ -77,19 +114,16 @@ while getopts ":n:d:s:ral:" opt; do
     esac
 done
 
+if [ "$a" -eq 0 ] && [ "$r" -eq 0 ] && [ "$l" -eq 0 ]; then
+    while read line; do
+        echo $line
+    done < dadosbydefault.txt
+fi
+
 # Remove as opções processadas da linha de comando
 shift $((OPTIND-1))
 
 # Agora, os argumentos remanescentes em "$@" são os diretórios a serem processados
-
-# Exiba as variáveis para verificar se elas foram atualizadas corretamente
-# echo "nome: $nome"
-# echo "dataMax: $dataMax"
-# echo "tamanhoMin: $tamanhoMin"
-
-# echo "var r: $r"
-# echo "var a: $a"
-# echo "var l: $l"
 
 # Processamento dos diretórios em baixo
 
@@ -149,41 +183,4 @@ calculate_directory_size() {
 
 }
 
-# Função para visualizar a ocupação do espaço como pretendido
-display(){
-    if [ "$a" -eq 0 ] && [ "$r" -eq 0 ] && [ "$l" -eq 0 ]; then
-        sort -n -r dados.txt > dadosbydefault.txt
-        while read line; do
-            echo $line
-        done < dadosbydefault.txt
-    elif [ "$a" -eq 1 ]; then
-        if [ "$r" -eq 1 ]; then
-            echo "You can only choose one option between -a and -r. Try again"
-        elif [ "$l" -gt 0 ]; then
-            sort -k2 dados.txt > dadosbyname.txt
-            head -n "$l" dadosbyname.txt
-        else
-            sort -k2 dados.txt > dadosbyname.txt
-            while read line; do
-                echo $line
-            done < dadosbyname.txt
-        fi
-    elif [ "$r" -eq 1 ]; then
-        if [ "$l" -gt 0 ]; then
-            sort -n dados.txt > reversedados.txt
-            head -n "$l" reversedados.txt
-        else
-            sort -n dados.txt > reversedados.txt
-            while read line; do
-                echo $line
-            done < reversedados.txt
-        fi
-    elif [ "$l" -gt 0 ]; then
-        head -n "$l" dadosbydefault.txt
-    fi
-}
-
-
 calculate_directory_size "$main_directory"
-printHeader "$header"
-display
