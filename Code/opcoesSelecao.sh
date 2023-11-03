@@ -122,11 +122,16 @@ calculate_directory_size() {
     local total_size=0 # tem permissão, portanto começa com SIZE 0
 
 
-    folders=$(find "$dir" -type d)
-
+    folders=$(find "$dir" -type d 2>/dev/null)  # alterei
     while IFS= read -r df; do
       total_size=0
-      files=$(find "$df" -type f)
+
+      if [[ ! -r "$df" ]] || [[ ! -x "$df" ]] ; then
+          echo "NA $df" >> dados.txt
+          continue  # Saltar para o próximo diretório se não for acessível
+      fi
+
+      files=$(find "$df" -type f 2>/dev/null)  # Redireciona erros para /dev/null
       while IFS= read -r file; do
           if [[ -f "$file" ]] && [[ "$file" =~ $nome ]] && [[ $(date -r "$file" +%s) -le $(date -d "$dataMax" +%s) ]] && [[ $(stat -c %s "$file") -ge "$tamanhoMin" ]]; then
       	    total_size=$((total_size + $(stat -c %s "$file")))
