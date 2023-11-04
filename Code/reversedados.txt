@@ -1,8 +1,0 @@
-260 Teste2/aula1/exemplo
-260 Teste2/aula2/exemplo2
-266 Teste2/aula3
-492 Teste2/aula1
-724 Teste2/aula2
-250220 Teste2/abc
-251962 Teste2
-

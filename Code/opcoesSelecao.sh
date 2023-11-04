@@ -13,6 +13,8 @@ r=0
 a=0
 l=0
 
+# Dictionary creation
+declare -A space_dict
 
 # Verifica se a data é válida
 dateIsValid(){
@@ -45,7 +47,6 @@ directory_notFound(){
   exit 1;
 }
 
-sort -n -r dados.txt > dadosbydefault.txt
 printHeader "$header"
 
 # Processa as opções da linha de comando
@@ -56,51 +57,18 @@ while getopts ":n:d:s:ral:" opt; do
             ;;
         d)
             dataMax="$OPTARG"
-            if [[ $(dateIsValid $dataMax) -eq 1 ]]; then
-                echo "Insert a valid date"
-                exit 1;
-            fi
             ;;
         s)
             tamanhoMin="$OPTARG"
-            if [[ $(sizeIsValid $tamanhoMin) -eq 1 ]]; then
-                echo "Insert a valid size"
-                exit 1;
-            fi
             ;;
         r)
             r=1
-            if [ "$l" -gt 0 ]; then
-                sort -n dados.txt > reversedados.txt
-                head -n "$l" reversedados.txt
-            else
-                sort -n dados.txt > reversedados.txt
-                while read line; do
-                    echo $line
-                done < reversedados.txt
-            fi
             ;;
         a)
             a=1
-            if [ "$r" -eq 1 ]; then
-                echo "You can only choose one option between -a and -r. Try again"
-            elif [ "$l" -gt 0 ]; then
-                sort -k2 dados.txt > dadosbyname.txt
-                head -n "$l" dadosbyname.txt
-            else
-                sort -k2 dados.txt > dadosbyname.txt
-                while read line; do
-                    echo $line
-                done < dadosbyname.txt
-            fi
             ;;
         l)
             l="$OPTARG"
-            if [[ $(sizeIsValid $l) -eq 1 ]]; then
-                echo "Insert a valid number of lines"
-                exit 1;
-            fi
-            head -n "$l" dadosbydefault.txt
             ;;
 
         \?)
@@ -114,11 +82,6 @@ while getopts ":n:d:s:ral:" opt; do
     esac
 done
 
-if [ "$a" -eq 0 ] && [ "$r" -eq 0 ] && [ "$l" -eq 0 ]; then
-    while read line; do
-        echo $line
-    done < dadosbydefault.txt
-fi
 
 # Remove as opções processadas da linha de comando
 shift $((OPTIND-1))
@@ -126,9 +89,6 @@ shift $((OPTIND-1))
 # Agora, os argumentos remanescentes em "$@" são os diretórios a serem processados
 
 # Processamento dos diretórios em baixo
-
-# Cria ou substitui o arquivo "dados.txt"
-> dados.txt
 
 # Verifica se um diretório foi especificado
 if [ $# -eq 0 ]; then # verifica se restaram argumentos na linha de comando
@@ -149,19 +109,17 @@ calculate_directory_size() {
 
     # Verifica se o script tem permissão de leitura para o diretório.
     if [ ! -r "$dir" ]; then
-        echo "$total_size $dir" >> dados.txt # exibir "NA" em vez de "0" pois defini em cima >> local total_size="NA"
+        space_dict["$dir"]="$total_size";
         return
     fi
 
     local total_size=0 # tem permissão, portanto começa com SIZE 0
 
-
     folders=$(find "$dir" -type d 2>/dev/null)  # alterei
     while IFS= read -r df; do
       total_size=0
-
       if [[ ! -r "$df" ]] || [[ ! -x "$df" ]] ; then
-          echo "NA $df" >> dados.txt
+          space_dict["$df"]="NA"
           continue  # Saltar para o próximo diretório se não for acessível
       fi
 
@@ -171,10 +129,8 @@ calculate_directory_size() {
       	    total_size=$((total_size + $(stat -c %s "$file")))
           fi
       done <<< "$files"
-      echo "$total_size $df" >> dados.txt
+      space_dict["$df"]="$total_size";
     done <<< "$folders"
-
-
 
     # a verificação if [ "$dir" != "$main_directory" ] garante que o echo "$total_size" só seja executado quando o diretório atual não for o diretório principal. Dessa forma, o echo não aparecerá na saída final quando o diretório atual for o diretório principal.
     if [ "$dir" != "$main_directory" ]; then
@@ -184,3 +140,40 @@ calculate_directory_size() {
 }
 
 calculate_directory_size "$main_directory"
+
+# Função para visualizar a ocupação do espaço como pretendido
+display(){
+    if [ "$a" -eq 0 ] && [ "$r" -eq 0 ] && [ "$l" -eq 0 ]; then
+        for key in "${!space_dict[@]}"; do
+            echo "${space_dict[$key]} $key"
+        done | sort -r -n -k1
+    elif [ "$a" -eq 1 ]; then
+        if [ "$r" -eq 1 ]; then
+            echo "You can only choose one option between -a and -r. Try again"
+        elif [ "$l" -gt 0 ]; then
+            for key in "${!space_dict[@]}"; do
+                echo "${space_dict[$key]} $key"
+            done | sort -k2 | head -n $l
+        else
+            for key in "${!space_dict[@]}"; do
+                echo "${space_dict[$key]} $key"
+            done | sort -k2
+        fi
+    elif [ "$r" -eq 1 ]; then
+        if [ "$l" -gt 0 ]; then
+            for key in "${!space_dict[@]}"; do
+                echo "${space_dict[$key]} $key"
+            done | sort -n -k1 | head -n $l
+        else
+            for key in "${!space_dict[@]}"; do
+                echo "${space_dict[$key]} $key"
+            done | sort -n -k1
+        fi
+    elif [ "$l" -gt 0 ]; then
+        for key in "${!space_dict[@]}"; do
+            echo "${space_dict[$key]} $key"
+        done | sort -r -n -k1 | head -n $l
+    fi
+}
+
+display
