@@ -16,26 +16,6 @@ l=0
 # Dictionary creation
 declare -A space_dict
 
-# Verifica se a data é válida
-dateIsValid(){
-    local input_date="$1";
-    if date -d "$input_date" "+%d %b %H:%M" > /dev/null 2>&1; then
-        return 0;
-    else
-        return 1;
-    fi
-}
-
-# Verifica se o tamanho é superior a zero
-sizeIsValid(){
-    local tamanhoMin="$1";
-    if [ "$tamanhoMin" -gt 0 ]; then
-        return 0;
-    else 
-        return 1;
-    fi
-}
-
 # Dá print ao cabeçalho (função incompleta já vou trabalhar nisso)
 printHeader(){
     current_date=$(date +'%Y%m%d')
@@ -57,9 +37,19 @@ while getopts ":n:d:s:ral:" opt; do
             ;;
         d)
             dataMax="$OPTARG"
+            if date -d "$dataMax" "+%d %b %H:%M" > /dev/null 2>&1; then
+                continue
+            else
+                echo "Input a valid date!"
+                exit 1;
+            fi
             ;;
         s)
             tamanhoMin="$OPTARG"
+            if [ "$tamanhoMin" -le 0 ]; then
+                echo "You have to give a size greater then zero!"
+                exit 1;
+            fi
             ;;
         r)
             r=1
@@ -69,8 +59,11 @@ while getopts ":n:d:s:ral:" opt; do
             ;;
         l)
             l="$OPTARG"
+            if [ "$l" -le 0 ]; then
+                echo "You have to give a number of lines greater then zero!"
+                exit 1;
+            fi
             ;;
-
         \?)
             echo "Opção inválida: -$OPTARG" >&2
             exit 1
