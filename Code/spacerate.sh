@@ -21,6 +21,10 @@ while getopts ":ral:" opt; do
             ;;
         l)
             l="$OPTARG"
+            if [ "$l" -lt 0 ]; then
+                echo "Insert a number of lines that is bigger than zero!"
+                exit 1;
+            fi
             ;;
         \?)
             echo "Opção inválida: -$OPTARG" >&2
@@ -38,69 +42,65 @@ shift $((OPTIND-1))
 
 # Agora, os argumentos remanescentes em "$@" são os diretórios a serem processados
 
-# Cria ou substitui o arquivo "dados.txt"
-> spacerate.txt
+#if [ $# -eq 2 ]; then # verifica se restaram argumentos na linha de comando
+  #  echo "ERRO: Especifique dois ficheiros." >&2
+ #   display_help
+#fi
 
-if [ $# -eq 2 ]; then # verifica se restaram argumentos na linha de comando
-    echo "ERRO: Especifique dois ficheiros." >&2
-    display_help
-fi
 
 fileA="$1"
 fileB="$2"
+declare -A fileA_dict
+declare -A fileB_dict
+declare -A rate_dict
 
 # Função que calcula a evolução do espaço ocupado
 calculate_size_evolution(){
     while IFS= read -r lineB; do
-        if grep -q 'SIZE NAME' $fileB; then
+        if grep -q 'SIZE NAME' "$fileB"; then
             continue
         else
-            folder=$(echo "$lineB" | awk '{print $2}')
+            folderB=$(echo "$lineB" | awk '{print $2}')
             sizeB=$(echo "$lineB" | awk '{print $1}')
-            while IFS= read -r lineA; do
-                if grep -q 'SIZE NAME' $fileA; then
-                    continue
-                else    
-                    if grep -q "$folder" $lineA; then
-                        sizeA=$(echo "$lineBA" | awk '{print $1}')
-                        sizeEvolution=$((sizeA - sizeB))
-                    fi
-                fi
-            done < $fileA
-        fi;
-    done < $fileB
+            fileB_dict["$folderB"]="$sizeB";
+        fi
+    done < "$fileB"
+
+    while IFS= read -r lineA; do
+        if grep -q 'SIZE NAME' "$fileA"; then
+            continue
+        else
+            folderA=$(echo "$lineA" | awk '{print $2}')
+            sizeA=$(echo "$lineA" | awk '{print $1}')
+            fileA_dict["$folderA"]="$sizeA";
+        fi
+    done < "$fileA"
+
+    for key in "${!fileB_dict[@]}"; do
+        if [[ -v "$fileA_dict[$key]" ]]; then
+            sizeB="${fileB_dict[$key]}"
+            sizeA="${fileA_dict[$key]}"
+            size_rate=$((sizeB - sizeA))
+            rate_dict["$key"]=$size_rate
+        else
+            size_rate="${fileB_dict[$key]}"
+            key_new="$key NEW"
+            rate_dict["$key_new"]="$size_rate";
+        fi
+    done
+
+    for key in "${!fileA_dict[@]}"; do
+        if [[ ! -v "$fileB_dict[$key]" ]]; then
+            size_rate=-100
+            key_removed="$key REMOVED"
+            rate_dict["$key_removed"]="$size_rate";
+        fi
+    done
 }
 
-# Função para visualizar a ocupação do espaço como pretendido
-display(){
-    if [ "$a" -eq 0 ] && [ "$r" -eq 0 ] && [ "$l" -eq 0 ]; then
-        sort -n -r spacerate.txt > spaceratedefault.txt
-        while read line; do
-            echo $line
-        done < spaceratedefault.txt
-    elif [ "$a" -eq 1 ]; then
-        if [ "$r" -eq 1 ]; then
-            echo "You can only choose one option between -a and -r. Try again"
-        elif [ "$l" -gt 0 ]; then
-            sort -k2 spacerate.txt > spaceratebyname.txt
-            head -n "$l" spaceratebyname.txt
-        else
-            sort -k2 spacerate.txt > spaceratebyname.txt
-            while read line; do
-                echo $line
-            done < spaceratebyname.txt
-        fi
-    elif [ "$r" -eq 1 ]; then
-        if [ "$l" -gt 0 ]; then
-            sort -n spacerate.txt > reversespacerate.txt
-            head -n "$l" reversespacerate.txt
-        else
-            sort -n -r spacerate.txt > reversespacerate.txt
-            while read line; do
-                echo $line
-            done < reversespacerate.txt
-        fi
-    elif [ "$l" -gt 0 ]; then
-        head -n "$l" spaceratedefault.txt
-    fi
-}
+calculate_size_evolution
+printHeader
+
+for key in "${!rate_dict[@]}"; do
+    echo "${rate_dict[$key]} $key"
+done
