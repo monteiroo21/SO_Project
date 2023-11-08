@@ -1,0 +1,19 @@
+Testes 8 Nov 12:07
+
+./opcoesSelecao.sh -n “.*sh” Teste2 >> Não funciona
+./opcoesSelecao.sh -n '.*sh' Teste2 >> Funciona ( Está a fazer do maior para o menor)
+
+./opcoesSelecao.sh -r -n '.*sh' Teste2 >> Funciona ( Está a fazer do menor para o maior)
+
+./opcoesSelecao.sh -a -n '.*sh' Teste2 >> Funciona (Ordena por ordem alfabética)
+
+
+./opcoesSelecao.sh -l 2 -n '.*sh' Teste2 >> Funciona (Está a fazer do maior para o menor e APENAS METE 2 LINHAS)
+
+./opcoesSelecao.sh -r -l 2 -n '.*sh' Teste2 >> Combinação r+l >> Funciona ( Está a fazer do menor para o maior e APENAS METE 2 LINHAS)
+
+./opcoesSelecao.sh -a -l 2 -n '.*sh' Teste2 >> Funciona (Ordena por ordem alfabética e APENAS METE 2 LINHAS) 
+
+
+
+
