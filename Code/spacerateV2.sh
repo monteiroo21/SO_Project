@@ -54,6 +54,37 @@ declare -A fileA_dict
 declare -A fileB_dict
 declare -A rate_dict
 
+function realSize {
+    local directory="$1"
+    local size=0
+
+    if [[ "$2" == "A" ]]; then
+      for key in "${!fileA_dict[@]}"; do
+          if [[ "$key" == "$directory" || "$key" == "$directory/"* ]]; then
+              if [[ "$key" == "$directory" ]]; then # Se for o próprio diretório
+                size=${fileA_dict["$key"]}
+              else
+                  size=$((size - fileA_dict["$key"]))
+              fi
+          fi
+      done
+    else
+      for key in "${!fileB_dict[@]}"; do
+          if [[ "$key" == "$directory" || "$key" == "$directory/"* ]]; then
+              if [[ "$key" == "$directory" ]]; then # Se for o próprio diretório
+                size=${fileB_dict["$key"]}
+              else
+                  size=$((size - fileB_dict["$key"]))
+              fi
+          fi
+      done
+    fi
+
+    echo "$size"
+}
+
+
+
 # Função que calcula a evolução do espaço ocupado
 calculate_size_evolution(){
     while IFS= read -r lineB; do
@@ -78,28 +109,29 @@ calculate_size_evolution(){
     done < "$fileA"
 
 
+    # Loop para calcular as diferenças
     for key in "${!fileA_dict[@]}"; do
-
         if [[ -n ${fileB_dict[$key]+x} ]]; then
-            sizeB="${fileB_dict[$key]}"
-            sizeA="${fileA_dict[$key]}"
-            size_rate=$((sizeA - sizeB))
+            sizeB=$(realSize "$key")
+            sizeA=$(realSize "$key" "A")
+            size_rate=$((sizeA-sizeB))
             rate_dict["$key"]=$size_rate
         else
-            size_rate="${fileA_dict[$key]}"
+            sizeA=$(realSize "$key" "A")
             key_new="$key NEW"
-            rate_dict["$key_new"]="$size_rate";
+            rate_dict["$key_new"]=$sizeA
         fi
-
     done
 
     for key in "${!fileB_dict[@]}"; do
         if [[ ! -n ${fileA_dict[$key]+x} ]]; then
-            sizeB="${fileB_dict[$key]}"
+            echo "ola"
+            sizeB=$(realSize "$key")
             key_removed="$key REMOVED"
-            rate_dict["$key_removed"]="$sizeB";
+            rate_dict["$key_removed"]=$sizeB
         fi
     done
+
 }
 
 calculate_size_evolution

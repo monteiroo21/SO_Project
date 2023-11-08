@@ -51,41 +51,25 @@ corretamente.
 
 Análise do spacerate.sh
 
-Resultado do seguinte comando: cat spacecheck_20230923 
-SIZE NAME 20231105 -n .*sh -d Oct 30 10:00 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas
-3487 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas
-2039 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula2
-1610 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula2/Teste3
-1188 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula1
-956 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula1/Teste1
-921 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula2/Teste3/Teste4
-492 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula1/Teste1/Teste2
-0 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/az
 
-Resultado do seguinte comando: cat spacecheck_20220923 (FOI REMOVIDO 300 no ultimo, o resto devia aparecer 0)
-SIZE NAME 20231105 -n .*sh -d Oct 30 2022 10:00 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas
-3487 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas
-2039 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula2
-1610 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula2/Teste3
-1188 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula1
-956 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula1/Teste1
-921 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula2/Teste3/Teste4
-492 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula1/Teste1/Teste2
-300 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/az  
+O PM disse que na 2ªfunção era para pensar de forma diferente da 1ª, agora era para pensar unicamente no folder e não nos seus filhos.
 
-Output quando fazemos "./spacerate.sh spacecheck_20230923 spacecheck_20220923" deveria ser:
+Portanto temos que de alguma forma calcular o tamanho real apenas nesse folder.
+
+
+Como fazer?
+Enquanto existir diretórios a key comece com "Teste2/" ir subtraindo o size desses diretórios ao SIZE do diretório pai.
+O tamanho final é o desejado.
+
+Fazer igual para o fileA e para o fileB e depois apresentar a diferença.
+
+Exemplo1:
+./spacerateV2.sh spacecheck_20231123 spacecheck_20221123
 SIZE NAME
-0 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas
-0 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula2
-0 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula2/Teste3
-0 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula1
-0 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula1/Teste1
-0 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula2/Teste3/Teste4
-0 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula1/Teste1/Teste2
--300 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/az REMOVED
+5 Teste2
+15 Teste2/aula4/ex1 NEW
+-5 Teste2/aula4
+0 Teste2/aula3
+10 Teste2/aula4/ex2 NEW
 
-Output foi:
-SIZE NAME
-
-
-
+Está a funcionar!!
