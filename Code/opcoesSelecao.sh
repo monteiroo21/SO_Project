@@ -142,7 +142,7 @@ display(){
         done | sort -r -n -k1
     elif [ "$a" -eq 1 ]; then
         if [ "$r" -eq 1 ]; then
-            echo "You can only choose one option between -a and -r. Try again"
+            echo "You can only choose one option between -a and -r. Try again!"
         elif [ "$l" -gt 0 ]; then
             for key in "${!space_dict[@]}"; do
                 echo "${space_dict[$key]} $key"

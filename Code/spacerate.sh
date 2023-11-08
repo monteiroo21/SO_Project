@@ -77,7 +77,7 @@ calculate_size_evolution(){
     done < "$fileA"
 
     for key in "${!fileB_dict[@]}"; do
-        if [[ -v "$fileA_dict[$key]" ]]; then
+        if [[ -n ${fileA_dict[$key]+x} ]]; then
             sizeB="${fileB_dict[$key]}"
             sizeA="${fileA_dict[$key]}"
             size_rate=$((sizeB - sizeA))
@@ -90,7 +90,7 @@ calculate_size_evolution(){
     done
 
     for key in "${!fileA_dict[@]}"; do
-        if [[ ! -v "$fileB_dict[$key]" ]]; then
+        if [[ -n ${fileB_dict[$key]+x} ]]; then
             size_rate=-100
             key_removed="$key REMOVED"
             rate_dict["$key_removed"]="$size_rate";

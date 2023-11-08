@@ -15,5 +15,67 @@ Testes 8 Nov 12:07
 ./opcoesSelecao.sh -a -l 2 -n '.*sh' Teste2 >> Funciona (Ordena por ordem alfabética e APENAS METE 2 LINHAS) 
 
 
+./opcoesSelecao.sh -d "Nov 8 10:00" Teste2 >> Funciona >> deu igual a ./opcoesSelecao.sh Teste2
+
+./opcoesSelecao.sh -d "Nov 3 10:00" Teste2/aula3/ >> Funciona: apenas aparecem o ficheiro a.txt e o aula04e02b.sh. O aula04e02b(1).sh como foi modificado em Wed 08 Nov 2023 01∶01∶45 PM WET não aparece.
+
+./opcoesSelecao.sh -d "Nov 10 10:00" Teste2/aula3/ >> Funciona: já aparecem os 3's.
+
+ ./opcoesSelecao.sh -d "Nov 10 10:00" -l 2 Teste2/ >> Funciona bate certo com  ./opcoesSelecao.sh -d "Nov 10 10:00" Teste2/
+ 
+ ./opcoesSelecao.sh -r -d "Nov 10 10:00" -l 2 Teste2/ >> Funciona bate certo com  ./opcoesSelecao.sh -d "Nov 10 10:00" Teste2/
+ 
+  ./opcoesSelecao.sh -a -r -d "Nov 10 10:00" -l 2 Teste2/ >> Funciona. Aparece o aviso "You can only choose one option between -a and -r. Try again!"
+  
+  ./opcoesSelecao.sh /etc >> Funciona: Aparecem os folders sem permissão como NA.
+  
+NA /etc/ssl/private
+NA /etc/polkit-1/localauthority
+NA /etc/libvirt/secrets
+NA /etc/cups/ssl
+ 
+Acho que podemos concluir que a função opcoesSelecao.sh está a funcionar
+corretamente.
+
+*********************************************************************
+
+Análise do spacerate.sh
+
+Resultado do seguinte comando: cat spacecheck_20230923 
+SIZE NAME 20231105 -n .*sh -d Oct 30 10:00 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas
+3487 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas
+2039 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula2
+1610 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula2/Teste3
+1188 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula1
+956 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula1/Teste1
+921 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula2/Teste3/Teste4
+492 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula1/Teste1/Teste2
+0 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/az
+
+Resultado do seguinte comando: cat spacecheck_20220923 (FOI REMOVIDO 300 no ultimo, o resto devia aparecer 0)
+SIZE NAME 20231105 -n .*sh -d Oct 30 2022 10:00 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas
+3487 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas
+2039 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula2
+1610 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula2/Teste3
+1188 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula1
+956 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula1/Teste1
+921 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula2/Teste3/Teste4
+492 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula1/Teste1/Teste2
+300 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/az  
+
+Output quando fazemos "./spacerate.sh spacecheck_20230923 spacecheck_20220923" deveria ser:
+SIZE NAME
+0 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas
+0 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula2
+0 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula2/Teste3
+0 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula1
+0 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula1/Teste1
+0 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula2/Teste3/Teste4
+0 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/aula1/Teste1/Teste2
+-300 /home/joao/Desktop/SO/projetoSO/SO_Project/Code/Praticas/az REMOVED
+
+Output foi:
+SIZE NAME
+
 
 
