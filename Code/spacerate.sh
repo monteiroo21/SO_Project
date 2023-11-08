@@ -57,17 +57,18 @@ declare -A rate_dict
 # Função que calcula a evolução do espaço ocupado
 calculate_size_evolution(){
     while IFS= read -r lineB; do
-        if grep -q 'SIZE NAME' "$fileB"; then
+        if [[ "$lineB" == "SIZE NAME"* ]]; then
             continue
         else
             folderB=$(echo "$lineB" | awk '{print $2}')
             sizeB=$(echo "$lineB" | awk '{print $1}')
-            fileB_dict["$folderB"]="$sizeB";
+            fileB_dict["$folderB"]="$sizeB"
         fi
     done < "$fileB"
 
+
     while IFS= read -r lineA; do
-        if grep -q 'SIZE NAME' "$fileA"; then
+        if [[ "$lineA" == "SIZE NAME"* ]]; then
             continue
         else
             folderA=$(echo "$lineA" | awk '{print $2}')
@@ -78,6 +79,7 @@ calculate_size_evolution(){
 
     for key in "${!fileB_dict[@]}"; do
         if [[ -n ${fileA_dict[$key]+x} ]]; then
+            echo "hello"
             sizeB="${fileB_dict[$key]}"
             sizeA="${fileA_dict[$key]}"
             size_rate=$((sizeB - sizeA))
@@ -90,7 +92,7 @@ calculate_size_evolution(){
     done
 
     for key in "${!fileA_dict[@]}"; do
-        if [[ -n ${fileB_dict[$key]+x} ]]; then
+        if [[ ! -n ${fileB_dict[$key]+x} ]]; then
             size_rate=-100
             key_removed="$key REMOVED"
             rate_dict["$key_removed"]="$size_rate";
