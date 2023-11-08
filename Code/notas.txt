@@ -27,12 +27,22 @@ Testes 8 Nov 12:07
  
   ./opcoesSelecao.sh -a -r -d "Nov 10 10:00" -l 2 Teste2/ >> Funciona. Aparece o aviso "You can only choose one option between -a and -r. Try again!"
   
+  Dois exemplos para testar o s:
+  1)./opcoesSelecao.sh -s 240 Teste2/aula2 >> Funciona.
+  2)
+  ./opcoesSelecao.sh Teste2/aula1
+  ./opcoesSelecao.sh -s 240 Teste2/aula1
+  
+  
   ./opcoesSelecao.sh /etc >> Funciona: Aparecem os folders sem permissão como NA.
   
 NA /etc/ssl/private
 NA /etc/polkit-1/localauthority
 NA /etc/libvirt/secrets
 NA /etc/cups/ssl
+
+
+
  
 Acho que podemos concluir que a função opcoesSelecao.sh está a funcionar
 corretamente.

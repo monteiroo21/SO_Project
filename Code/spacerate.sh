@@ -79,7 +79,6 @@ calculate_size_evolution(){
 
     for key in "${!fileB_dict[@]}"; do
         if [[ -n ${fileA_dict[$key]+x} ]]; then
-            echo "hello"
             sizeB="${fileB_dict[$key]}"
             sizeA="${fileA_dict[$key]}"
             size_rate=$((sizeB - sizeA))
