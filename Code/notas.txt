@@ -1,6 +1,11 @@
 Testes 8 Nov 12:07
 
 ./opcoesSelecao.sh -n “.*sh” Teste2 >> Não funciona
+
+./opcoesSelecao.sh -n '.*sh' Teste
+SIZE NAME 20231110 -n .*sh Teste
+ERROR: Teste directory not found! >> Funciona (sinaliza que esse diretorio nao existe)
+
 ./opcoesSelecao.sh -n '.*sh' Teste2 >> Funciona ( Está a fazer do maior para o menor)
 
 ./opcoesSelecao.sh -r -n '.*sh' Teste2 >> Funciona ( Está a fazer do menor para o maior)
@@ -60,7 +65,6 @@ Portanto temos que de alguma forma calcular o tamanho real apenas nesse folder.
 Como fazer?
 Enquanto existir diretórios a key comece com "Teste2/" ir subtraindo o size desses diretórios ao SIZE do diretório pai.
 O tamanho final é o desejado.
-
 Fazer igual para o fileA e para o fileB e depois apresentar a diferença.
 
 Exemplo1:

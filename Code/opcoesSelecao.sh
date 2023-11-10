@@ -1,7 +1,8 @@
 #!/bin/bash
+# Indica que o script deve ser interpretado usando o Bash.
 
 # Cabeçalho
-header="$*"
+header="$*" # variável especial que representa como uma única string todos os argumentos passados para o script na linha de comando.
 
 # Opções de Seleção
 nome=""
@@ -16,7 +17,7 @@ l=0
 # Dictionary creation
 declare -A space_dict
 
-# Dá print ao cabeçalho (função incompleta já vou trabalhar nisso)
+# Dá print ao cabeçalho
 printHeader(){
     current_date=$(date +'%Y%m%d')
     printf "%4s %4s %8s %s\n" "SIZE" "NAME" "$current_date" "$*"
@@ -24,30 +25,34 @@ printHeader(){
 
 directory_notFound(){
   echo "ERROR: $1 directory not found!"
-  exit 1;
+  exit 1; # encerra o script
 }
 
 printHeader "$header"
 
 # Processa as opções da linha de comando
 while getopts ":n:d:s:ral:" opt; do
-    case $opt in
+    case $opt in # trata cada opção fornecida na linha de comando
         n)
             nome="$OPTARG"
+            if [[ ! "$nome" =~ ^\.\*[^/]+$ ]]; then # expressão regular para verificar se a variável nome está no formato desejado
+                    echo "Invalid pattern for -n. It should be in the format '.*sh', '.*pdf', '.*png', etc."
+                    exit 1
+            fi
             ;;
         d)
             dataMax="$OPTARG"
             if date -d "$dataMax" "+%d %b %H:%M" > /dev/null 2>&1; then
-                continue
+                continue # Se for válida, o script continua para a próxima iteração do loop
             else
                 echo "Input a valid date!"
-                exit 1;
+                exit 1; # Encerra o script com código de erro 1
             fi
             ;;
         s)
             tamanhoMin="$OPTARG"
-            if [ "$tamanhoMin" -le 0 ]; then
-                echo "You have to give a size greater then zero!"
+            if ! [[ "$tamanhoMin" =~ ^[0-9]+$ ]]; then
+                echo "You have to give a size greater then zero (an integer)!"
                 exit 1;
             fi
             ;;
@@ -59,8 +64,8 @@ while getopts ":n:d:s:ral:" opt; do
             ;;
         l)
             l="$OPTARG"
-            if [ "$l" -le 0 ]; then
-                echo "You have to give a number of lines greater then zero!"
+            if ! [[ "$l" =~ ^[1-9]+$ ]]; then
+                echo "You have to give a number of lines greater then zero (an integer)!"
                 exit 1;
             fi
             ;;
@@ -68,7 +73,7 @@ while getopts ":n:d:s:ral:" opt; do
             echo "Opção inválida: -$OPTARG" >&2
             exit 1
             ;;
-        :)
+        :) # Acho que podemos eliminar. Nunca chega aqui e já são tratados estes casos.
             echo "A opção -$OPTARG requer um argumento." >&2
             exit 1
             ;;
@@ -82,6 +87,17 @@ shift $((OPTIND-1))
 # Agora, os argumentos remanescentes em "$@" são os diretórios a serem processados
 
 # Processamento dos diretórios em baixo
+display_help() {
+    echo "Usage: $0 [options] directory"
+    echo "Options:"
+    echo "  -n pattern   Specify a pattern for file names (e.g., '.*sh', '.*pdf', '.*png')"
+    echo "  -d date      Specify a maximum date for file modification (format: 'YYYYMMDD')"
+    echo "  -s size      Specify a minimum size for files (in bytes)"
+    echo "  -r           Sort the output in reverse order"
+    echo "  -a           Sort the output by name"
+    echo "  -l lines     Limit the number of lines in the table"
+    exit 1
+}
 
 # Verifica se um diretório foi especificado
 if [ $# -eq 0 ]; then # verifica se restaram argumentos na linha de comando
