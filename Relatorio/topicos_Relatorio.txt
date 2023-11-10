@@ -1,1 +1,36 @@
 Trabalho 1 Gestão de armazenamento: Monitorização do espaço ocupado
+
+Script spacecheck.sh:
+
+O script spacecheck.sh realiza a primeira função, ou seja, permite a visualização do espaço
+ocupado pelos ficheiros selecionados na(s) diretoria(s) que lhe é(são) passada(s) como argumento e em
+todas as subdiretorias destas. A seleção dos ficheiros a contabilizar pode ser realizada através de uma
+expressão regular que é verificada com o nome dos ficheiros (opção -n), no caso de não existir esta
+indicação, todos os ficheiros devem ser contabilizados, através da especificação da data máxima de
+modificação dos ficheiros (opção -d) ou através da indicação do tamanho mínimo do ficheiro (opção
+-s). Todas as combinações das opções anteriores são possíveis. A visualização do espaço ocupado
+pode aparecer ordenada de várias formas (opções -r, para ordenar por ordem inversa, e -a, para
+ordenar por nome) e podem também ser limitado o número de linhas da tabela (opção -l). A tabela
+gerada por este script tem um cabeçalho que inclui títulos das colunas, data e opções.
+
+Como fazemos isto?
+
+- cabeçalho > utilização da variavel especial
+- Inicialização das opções de seleção
+- Inicialização das opções de visualização
+- Diretório não existe
+- Print do cabeçalho
+- Processa as opções da linha de comando. 
+
+Explicar a validação feita para a data, tamanhoMin e opção l.
+...
+O que acontece quando são introduzidas opções inválidas.
+O que acontece quando a opção requer um argumento.
+
+- shift para ficarmos apenas com o diretorio
+- Se não for introduzido nenhum diretorio ele sinaliza
+- armazena o diretorio e a função calculate_directory_size "$main_directory" é chamada.
+
+
+
+Script spacerate.sh

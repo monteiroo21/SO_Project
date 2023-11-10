@@ -73,10 +73,6 @@ while getopts ":n:d:s:ral:" opt; do
             echo "Opção inválida: -$OPTARG" >&2
             exit 1
             ;;
-        :) # Acho que podemos eliminar. Nunca chega aqui e já são tratados estes casos.
-            echo "A opção -$OPTARG requer um argumento." >&2
-            exit 1
-            ;;
     esac
 done
 
