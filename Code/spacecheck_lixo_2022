@@ -1,6 +1,8 @@
-SIZE NAME 20231108 -n .
-720 Teste 2
-30 Teste 2/abc
-150 Teste 2/aula2
-150 Teste 2/aula2/ex
-150 Teste 2/aula2/ex/1
+SIZE NAME 20231108 fileB
+70 Teste 2
+40 Teste 2/abc
+40 Teste 2/abc/1
+30 Teste 2/aula2
+10 Teste 2/aula2/1
+5 Teste 2/aula2/lixo
+15 Teste3

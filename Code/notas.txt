@@ -52,6 +52,9 @@ NA /etc/cups/ssl
 
  ./spacecheck.sh -s 100 Teste2 Teste2/abc Teste\ 3 >> Funciona + que 1 diretório
 
+ ./test_a1.sh (Fiz este teste 11 Nov 12h)
+  OK
+  
 Acho que podemos concluir que a função opcoesSelecao.sh está a funcionar
 corretamente.
 
@@ -70,13 +73,87 @@ Enquanto existir diretórios a key comece com "Teste2/" ir subtraindo o size des
 O tamanho final é o desejado.
 Fazer igual para o fileA e para o fileB e depois apresentar a diferença.
 
-Exemplo1:
-./spacerateV2.sh spacecheck_20231123 spacecheck_20221123
-SIZE NAME
-5 Teste2
-15 Teste2/aula4/ex1 NEW
--5 Teste2/aula4
-0 Teste2/aula3
-10 Teste2/aula4/ex2 NEW
+
 
 Está a funcionar!!
+
+Testei com e sem espaços (ver em baixo os dois casos)
+Em ambos os casos fiz com Teste 2/ (ou seja, com espaço no diretório pai). No final defazer todos estes testes adicionei Teste3 aos ficheiros para
+mostrar que podemos ter dados de diferentes diretórios e funciona na mesma. Ver Teste sinalizado com !!!
+
+Sem espaço (aula2) - Default (maior para menor)
+./spacerate.sh spacecheck_lixo_2023 spacecheck_lixo_2022
+SIZE NAME
+10 Teste 2/aula2/2 NEW
+10 Teste 2/abc/2 NEW
+5 Teste 2/aula2/lixo REMOVED
+5 Teste 2/aula2/3 NEW
+5 Teste 2/aula2/1
+0 Teste 2/abc
+0 Teste 2
+-15 Teste 2/aula2
+-30 Teste 2/abc/1
+
+
+Com espaço (aula 2) - Default (maior para menor)
+./spacerate.sh spacecheck_lixo_2023 spacecheck_lixo_2022
+SIZE NAME
+10 Teste 2/aula 2/2 NEW
+10 Teste 2/abc/2 NEW
+5 Teste 2/aula 2/lixo REMOVED
+5 Teste 2/aula 2/3 NEW
+5 Teste 2/aula 2/1
+0 Teste 2/abc
+0 Teste 2
+-15 Teste 2/aula 2
+-30 Teste 2/abc/1
+
+
+Testar as opções de visualização:
+sem espaço (aula2) - opção -l 2
+./spacerate.sh -l 2 spacecheck_lixo_2023 spacecheck_lixo_2022 >> FUNCIONA
+SIZE NAME
+10 Teste 2/aula2/2 NEW
+10 Teste 2/abc/2 NEW
+
+./spacerate.sh -r spacecheck_lixo_2023 spacecheck_lixo_2022 >> Funciona
+SIZE NAME
+-30 Teste 2/abc/1
+-15 Teste 2/aula2
+0 Teste 2
+0 Teste 2/abc
+5 Teste 2/aula2/1
+5 Teste 2/aula2/3 NEW
+5 Teste 2/aula2/lixo REMOVED
+10 Teste 2/abc/2 NEW
+10 Teste 2/aula2/2 NEW
+
+./spacerate.sh -a spacecheck_lixo_2023 spacecheck_lixo_2022
+SIZE NAME
+0 Teste 2
+0 Teste 2/abc
+-30 Teste 2/abc/1
+10 Teste 2/abc/2 NEW
+-15 Teste 2/aula2
+5 Teste 2/aula2/1
+10 Teste 2/aula2/2 NEW
+5 Teste 2/aula2/3 NEW
+5 Teste 2/aula2/lixo REMOVED
+
+./spacerate.sh -a -r spacecheck_lixo_2023 spacecheck_lixo_2022 >> Funciona >>  You can only choose one option between -a and -r. Try again!
+
+
+Teste sinalizado com !!!:  >> Funciona com diferentes diretórios. Fiz para Teste 2 e Teste3
+./spacerate.sh -r spacecheck_lixo_2023 spacecheck_lixo_2022
+
+SIZE NAME
+-30 Teste 2/abc/1
+-15 Teste 2/aula2
+-5 Teste3
+0 Teste 2
+0 Teste 2/abc
+5 Teste 2/aula2/1
+5 Teste 2/aula2/3 NEW
+5 Teste 2/aula2/lixo REMOVED
+10 Teste 2/abc/2 NEW
+10 Teste 2/aula2/2 NEW

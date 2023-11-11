@@ -1,6 +1,10 @@
-SIZE NAME 20231108 -n .*sh
-750 Teste 2
-50 Teste 2/abc
-200 Teste 2/aula2
-100 Teste 2/aula2/ex
-100 Teste 2/aula2/ex/1
+SIZE NAME 20231108 fileA
+50 Teste 2
+20 Teste 2/abc
+10 Teste 2/abc/1
+10 Teste 2/abc/2
+30 Teste 2/aula2
+15 Teste 2/aula2/1
+10 Teste 2/aula2/2
+5 Teste 2/aula2/3
+10 Teste3
