@@ -14,10 +14,10 @@ r=0
 a=0
 l=0
 
-# Dictionary creation
+# Criar o dicionário que vai ser usado para guardar o size associado a cada diretório.
 declare -A space_dict
 
-# Processamento dos diretórios em baixo
+# Esta função é chamada quando nenhum diretório foi especificado. Explica ao utilizador como interagir com o script.
 display_help() {
     echo "Usage: $0 [options] directory"
     echo "Options:"
@@ -65,7 +65,7 @@ while getopts ":n:d:s:ral:" opt; do
         s)
             tamanhoMin="$OPTARG"
             if ! [[ "$tamanhoMin" =~ ^[0-9]+$ ]]; then
-                echo "You have to give a size greater then zero (an integer)!"
+                echo "You have to give a size greater or equal than zero (an integer)!"
                 exit 1;
             fi
             ;;
@@ -78,25 +78,22 @@ while getopts ":n:d:s:ral:" opt; do
         l)
             l="$OPTARG"
             if ! [[ "$l" =~ ^[1-9]+$ ]]; then
-                echo "You have to give a number of lines greater then zero (an integer)!"
+                echo "You have to give a number of lines greater than zero (an integer)!"
                 exit 1;
             fi
             ;;
         \?)
-            echo "Opção inválida: -$OPTARG" >&2
+            echo "Invalid option: -$OPTARG" >&2
             exit 1
             ;;
     esac
 done
 
 
-# Remove as opções processadas da linha de comando
+# Remove as opções processadas da linha de comando. Agora, os argumentos restantes em "$@" são os diretórios a serem processados
 shift $((OPTIND-1))
 
-# Agora, os argumentos remanescentes em "$@" são os diretórios a serem processados
-
-
-# Verifica se um diretório foi especificado
+# Verifica se pelo menos 1 diretório foi especificado
 if [ $# -eq 0 ]; then # verifica se restaram argumentos na linha de comando
     echo "ERRO: Nenhum diretório especificado." >&2
     display_help
