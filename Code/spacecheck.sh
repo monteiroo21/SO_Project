@@ -17,6 +17,19 @@ l=0
 # Dictionary creation
 declare -A space_dict
 
+# Processamento dos diretórios em baixo
+display_help() {
+    echo "Usage: $0 [options] directory"
+    echo "Options:"
+    echo "  -n pattern   Specify a pattern for file names (e.g., '.*sh', '.*pdf', '.*png')"
+    echo "  -d date      Specify a maximum date for file modification (format: 'YYYYMMDD')"
+    echo "  -s size      Specify a minimum size for files (in bytes)"
+    echo "  -r           Sort the output in reverse order"
+    echo "  -a           Sort the output by name"
+    echo "  -l lines     Limit the number of lines in the table"
+    exit 1
+}
+
 # Dá print ao cabeçalho
 printHeader(){
     current_date=$(date +'%Y%m%d')
@@ -82,18 +95,6 @@ shift $((OPTIND-1))
 
 # Agora, os argumentos remanescentes em "$@" são os diretórios a serem processados
 
-# Processamento dos diretórios em baixo
-display_help() {
-    echo "Usage: $0 [options] directory"
-    echo "Options:"
-    echo "  -n pattern   Specify a pattern for file names (e.g., '.*sh', '.*pdf', '.*png')"
-    echo "  -d date      Specify a maximum date for file modification (format: 'YYYYMMDD')"
-    echo "  -s size      Specify a minimum size for files (in bytes)"
-    echo "  -r           Sort the output in reverse order"
-    echo "  -a           Sort the output by name"
-    echo "  -l lines     Limit the number of lines in the table"
-    exit 1
-}
 
 # Verifica se um diretório foi especificado
 if [ $# -eq 0 ]; then # verifica se restaram argumentos na linha de comando
@@ -102,7 +103,7 @@ if [ $# -eq 0 ]; then # verifica se restaram argumentos na linha de comando
 fi
 
 # Armazena o diretório de destino
-main_directory="$1"
+main_directories=("$@")
 
 # Função para calcular o tamanho total de um diretório e exibi-lo
 calculate_directory_size() {
@@ -111,12 +112,6 @@ calculate_directory_size() {
 
     # Diretoria nao existe
     [[ -d "$dir" ]] || directory_notFound "$dir"
-
-    # Verifica se o script tem permissão de leitura para o diretório.
-    if [ ! -r "$dir" ]; then
-        space_dict["$dir"]="$total_size";
-        return
-    fi
 
     local total_size=0 # tem permissão, portanto começa com SIZE 0
 
@@ -136,15 +131,11 @@ calculate_directory_size() {
       done <<< "$files"
       space_dict["$df"]="$total_size";
     done <<< "$folders"
-
-    # a verificação if [ "$dir" != "$main_directory" ] garante que o echo "$total_size" só seja executado quando o diretório atual não for o diretório principal. Dessa forma, o echo não aparecerá na saída final quando o diretório atual for o diretório principal.
-    if [ "$dir" != "$main_directory" ]; then
-      echo "$total_size"
-    fi
-
 }
 
-calculate_directory_size "$main_directory"
+
+
+# calculate_directory_size "$main_directory"
 
 # Função para visualizar a ocupação do espaço como pretendido
 display(){
@@ -180,5 +171,12 @@ display(){
         done | sort -r -n -k1 | head -n $l
     fi
 }
+
+
+for directory in "${main_directories[@]}"; do
+    # echo "Processando o diretório: $directory"
+
+    calculate_directory_size "$directory"
+done
 
 display

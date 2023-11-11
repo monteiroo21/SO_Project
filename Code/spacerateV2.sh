@@ -54,7 +54,7 @@ declare -A fileA_dict
 declare -A fileB_dict
 declare -A rate_dict
 
-function realSize {
+realSize(){
     local directory="$1"
     local size=0
 
@@ -83,37 +83,39 @@ function realSize {
     echo "$size"
 }
 
-
+## Adicionando um caractere de nova linha no final do arquivo, se não existir
+#[[ $(tail -c 1 "$fileA") != $'\n' ]] && echo >> "$fileA"
+#
+## Adicionando um caractere de nova linha no final do arquivo, se não existir
+#[[ $(tail -c 1 "$fileB") != $'\n' ]] && echo >> "$fileB"
 
 # Função que calcula a evolução do espaço ocupado
 calculate_size_evolution(){
-    while IFS= read -r lineB; do
-        if [[ "$lineB" == "SIZE NAME"* ]]; then
+    while read -r size path; do
+        if [[ "$size" == "SIZE" ]]; then
             continue
         else
-            folderB=$(echo "$lineB" | awk '{print $2}')
-            sizeB=$(echo "$lineB" | awk '{print $1}')
-            fileB_dict["$folderB"]="$sizeB"
+            fileA_dict["$path"]="$size"
+
         fi
-    done < "$fileB"
+    done <<< "$(cat "$fileA" | awk '{ printf $1; for (i=2; i<=NF; i++) printf " %s", $i; print "" }')"
 
+    while read -r size path; do
+            if [[ "$size" == "SIZE" ]]; then
+                continue
+            else
+                fileB_dict["$path"]="$size"
 
-    while IFS= read -r lineA; do
-        if [[ "$lineA" == "SIZE NAME"* ]]; then
-            continue
-        else
-            folderA=$(echo "$lineA" | awk '{print $2}')
-            sizeA=$(echo "$lineA" | awk '{print $1}')
-            fileA_dict["$folderA"]="$sizeA";
-        fi
-    done < "$fileA"
-
+            fi
+    done <<< "$(cat "$fileB" | awk '{ printf $1; for (i=2; i<=NF; i++) printf " %s", $i; print "" }')"
 
     # Loop para calcular as diferenças
     for key in "${!fileA_dict[@]}"; do
         if [[ -n ${fileB_dict[$key]+x} ]]; then
+            # echo "$key"
             sizeB=$(realSize "$key")
             sizeA=$(realSize "$key" "A")
+            # echo "$sizeA" - "$sizeB"
             size_rate=$((sizeA-sizeB))
             rate_dict["$key"]=$size_rate
         else
@@ -125,7 +127,6 @@ calculate_size_evolution(){
 
     for key in "${!fileB_dict[@]}"; do
         if [[ ! -n ${fileA_dict[$key]+x} ]]; then
-            echo "ola"
             sizeB=$(realSize "$key")
             key_removed="$key REMOVED"
             rate_dict["$key_removed"]=$sizeB
@@ -136,7 +137,11 @@ calculate_size_evolution(){
 
 calculate_size_evolution
 printHeader
+#
+#for key in "${!rate_dict[@]}"; do
+#    echo "${rate_dict[$key]} $key"
+#done
 
-for key in "${!rate_dict[@]}"; do
-    echo "${rate_dict[$key]} $key"
-done
+#for key in "${!fileA_dict[@]}"; do
+ #   echo "${fileA_dict[$key]} $key"
+#done

@@ -1,6 +1,7 @@
 Testes 8 Nov 12:07
 
 ./opcoesSelecao.sh -n “.*sh” Teste2 >> Não funciona
+./spacecheck.sh -n ".*sh" Teste2 >> Funciona (aspas ligeiramente diferentes)
 
 ./opcoesSelecao.sh -n '.*sh' Teste
 SIZE NAME 20231110 -n .*sh Teste
@@ -47,8 +48,10 @@ NA /etc/libvirt/secrets
 NA /etc/cups/ssl
 
 
+./spacecheck.sh -n ".*sh" Teste\ 3 >> Funciona c/ espaços
 
- 
+ ./spacecheck.sh -s 100 Teste2 Teste2/abc Teste\ 3 >> Funciona + que 1 diretório
+
 Acho que podemos concluir que a função opcoesSelecao.sh está a funcionar
 corretamente.
 
