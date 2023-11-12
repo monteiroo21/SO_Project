@@ -28,18 +28,18 @@ while getopts ":ral:" opt; do
             ;;
 
         \?)
-            echo "Opção inválida: -$OPTARG" >&2
+            echo "Invalid option: -$OPTARG" >&2
             exit 1
             ;;
     esac
 done
 
-# Remove as opções processadas da linha de comando
+# Remove as opcoes processadas da linha de comando
 shift $((OPTIND-1))
 
-# Agora, os argumentos remanescentes em "$@" são os diretórios a serem processados
+# Agora, os argumentos remanescentes sao os ficheiros
 
-if [ ! "$#" -eq 2 ]; then # verifica se restaram argumentos na linha de comando
+if [ ! "$#" -eq 2 ]; then # verifica se restaram apenas dois argumentos na linha de comando
     echo "ERRO: Especifique dois ficheiros."
     exit 1;
 fi
@@ -104,10 +104,8 @@ calculate_size_evolution(){
     # Loop para calcular as diferenças
     for key in "${!fileA_dict[@]}"; do
         if [[ -n ${fileB_dict[$key]+x} ]]; then
-            # echo "$key"
             sizeB=$(realSize "$key")
             sizeA=$(realSize "$key" "A")
-            # echo "$sizeA" - "$sizeB"
             size_rate=$((sizeA-sizeB))
             rate_dict["$key"]=$size_rate
         else
