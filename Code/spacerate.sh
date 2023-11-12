@@ -57,7 +57,7 @@ realSize(){
 
     if [[ "$2" == "A" ]]; then
       for key in "${!fileA_dict[@]}"; do
-          if [[ "$key" == "$directory" || ("$key" == "$directory"/* && "$key" != "$directory"/*/*) ]]; then
+          if [[ "$key" == "$directory" || ("$key" == "$directory"/* && "$key" != "$directory"//) ]]; then
               if [[ "$key" == "$directory" ]]; then # Se for o próprio diretório
                 size=$((size + fileA_dict["$key"]))
               else
@@ -67,7 +67,7 @@ realSize(){
       done
     else
       for key in "${!fileB_dict[@]}"; do
-          if [[ "$key" == "$directory" || ("$key" == "$directory"/* && "$key" != "$directory"/*/*) ]]; then
+          if [[ "$key" == "$directory" || ("$key" == "$directory"/* && "$key" != "$directory"//) ]]; then
               if [[ "$key" == "$directory" ]]; then # Se for o próprio diretório
                 size=$((size + fileB_dict["$key"]))
               else
@@ -121,7 +121,7 @@ calculate_size_evolution(){
         if [[ ! -n ${fileA_dict[$key]+x} ]]; then
             sizeB=$(realSize "$key")
             key_removed="$key REMOVED"
-            rate_dict["$key_removed"]=$sizeB
+            rate_dict["$key_removed"]=-$sizeB
         fi
     done
 
