@@ -28,18 +28,18 @@ while getopts ":ral:" opt; do
             ;;
 
         \?)
-            echo "Invalid option: -$OPTARG" >&2
+            echo "Opção inválida: -$OPTARG" >&2
             exit 1
             ;;
     esac
 done
 
-# Remove as opcoes processadas da linha de comando
+# Remove as opções processadas da linha de comando
 shift $((OPTIND-1))
 
-# Agora, os argumentos remanescentes sao os ficheiros
+# Agora, os argumentos remanescentes em "$@" são os diretórios a serem processados
 
-if [ ! "$#" -eq 2 ]; then # verifica se restaram apenas dois argumentos na linha de comando
+if [ ! "$#" -eq 2 ]; then # verifica se restaram argumentos na linha de comando
     echo "ERRO: Especifique dois ficheiros."
     exit 1;
 fi
@@ -104,8 +104,10 @@ calculate_size_evolution(){
     # Loop para calcular as diferenças
     for key in "${!fileA_dict[@]}"; do
         if [[ -n ${fileB_dict[$key]+x} ]]; then
+            # echo "$key"
             sizeB=$(realSize "$key")
             sizeA=$(realSize "$key" "A")
+            # echo "$sizeA" - "$sizeB"
             size_rate=$((sizeA-sizeB))
             rate_dict["$key"]=$size_rate
         else
@@ -125,6 +127,45 @@ calculate_size_evolution(){
 
 }
 
+calculate_size_evolution
+printHeader
+#
+#for key in "${!rate_dict[@]}"; do
+#    echo "${rate_dict[$key]} $key"
+#done
+
+#for key in "${!fileA_dict[@]}"; do
+#    echo "${fileA_dict[$key]} $key"
+#done
+
+##directory="Teste 2/aula2"
+##directory="Teste 2/abc"
+#directory="Teste 2"
+#
+#echo "Nome do diretorio cujo tamanho real quero calcular: $directory"
+#echo " "
+#size=0;
+#for key in "${!fileA_dict[@]}"; do
+#
+#          echo "${fileA_dict[$key]} $key"
+#          if [[ "$key" == "$directory" || ("$key" == "$directory"/* && "$key" != "$directory"/*/*) ]]; then # A chave é um subdiretório direto do diretório pai
+#              if [[ "$key" == "$directory" ]]; then # Se for o próprio diretório
+#                echo "Eu (key) sou igual ao diretório passado como argumento"
+#                echo " "
+#                size=$((size + fileA_dict["$key"]))
+#              else
+#                echo "Eu (key) sou um subdiretorio direto do diretorio passado como argumento."
+#                echo ""
+#                size=$((size - fileA_dict["$key"]))
+#              fi
+#          else
+#                echo "Não sou o diretorio passado como argumento nem um subdiretorio direto dele."
+#                echo ""
+#          fi
+#
+#done
+#
+#echo "Size real de $directory: $size"
 
 # Função para visualizar a ocupação do espaço como pretendido
 display(){
@@ -161,6 +202,4 @@ display(){
     fi
 }
 
-calculate_size_evolution
-printHeader
 display
